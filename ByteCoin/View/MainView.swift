@@ -14,16 +14,28 @@ protocol MainViewDelegate: AnyObject {
 class MainView: CustomView {
 //    weak var delegate: MainViewDelegate?
     
+    private lazy var background: UIView = {
+        let element = UIView()
+        element.backgroundColor = Resources.Colors.backgroundColor
+        element.translatesAutoresizingMaskIntoConstraints = false
+        return element
+    }()
+    
     override func setViews() {
         super.setViews()
         
-        // Add subviews
+        self.addSubview(background)
     }
     
     override func layoutViews() {
         super.layoutViews()
         
-        // Add constraints
+        NSLayoutConstraint.activate([
+            background.topAnchor.constraint(equalTo: self.topAnchor),
+            background.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+            background.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            background.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+        ])
     }
 }
 
