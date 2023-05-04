@@ -7,6 +7,11 @@
 
 import Foundation
 
+protocol CoinManagerDelegate: AnyObject {
+    func didUpdateRate(_ coinManager: CoinManager, rate: Double)
+    func didFailError(_ coinManager: CoinManager, error: Error)
+}
+
 struct CoinManager {
     
     let baseURL = "https://rest.coinapi.io/v1/exchangerate/BTC/"
@@ -14,6 +19,8 @@ struct CoinManager {
     
     let currencyArray = ["AUD", "BRL","CAD","CNY","EUR","GBP","HKD","IDR","ILS","INR","JPY","MXN","NOK","NZD","PLN","RON","RUB","SEK","SGD","USD","ZAR"]
 
+    var delegate: CoinManagerDelegate?
+    
     func getCoinPrice(for currency: String) {
         let urlString = baseURL + currency + "?apikey=" + apiKey
         performRequest(with: urlString)
@@ -28,14 +35,13 @@ struct CoinManager {
             //3. Give the session a task
             let task = session.dataTask(with: url) { (data, response, error) in
                 if error != nil {
-//                    self.delegate?.didFailError(self, error: error!)
+                    self.delegate?.didFailError(self, error: error!)
                     return
                 }
                 
                 if let safeData = data {
                     if let coinRate = self.parseJSON(safeData) {
-//                        self.delegate?.didUpdateWeather(self, weather: weather)
-                        print(coinRate)
+                        self.delegate?.didUpdateRate(self, rate: coinRate)
                     }
                 }
             }
@@ -54,7 +60,7 @@ struct CoinManager {
             return rate
             
         } catch {
-//            delegate?.didFailError(self, error: error)
+            delegate?.didFailError(self, error: error)
             return nil
         }
     }
