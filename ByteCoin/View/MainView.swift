@@ -14,6 +14,10 @@ protocol MainViewDelegate: AnyObject {
 class MainView: CustomView {
 //    weak var delegate: MainViewDelegate?
     
+    var currencyPicker: UIPickerView {
+        return pickerView
+    }
+    
     private lazy var background: UIView = {
         let element = UIView()
         element.backgroundColor = Resources.Colors.backgroundColor
