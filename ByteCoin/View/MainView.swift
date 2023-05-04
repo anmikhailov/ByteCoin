@@ -18,6 +18,24 @@ class MainView: CustomView {
         return pickerView
     }
     
+    var rateValue: String? {
+        get {
+            return calculatedValueLabel.text
+        }
+        set {
+            calculatedValueLabel.text = newValue
+        }
+    }
+    
+    var currency: String? {
+        get {
+            return currencyLabel.text
+        }
+        set {
+            currencyLabel.text = newValue
+        }
+    }
+    
     private lazy var background: UIView = {
         let element = UIView()
         element.backgroundColor = Resources.Colors.backgroundColor
